@@ -81,7 +81,7 @@ public class Mailer {
 		try {
 			String email = thymeleaf.process("mail/ResumoVenda", context);
 			
-			Email from = new Email("mr.leal@gmail.com");
+			Email from = new Email(env.getProperty("MAIL_FROM")); //email cadastrado no sendgrid
 			Email to = new Email(venda.getCliente().getEmail());
 			String subject = String.format("Brewer - Venda nº %d", venda.getCodigo());
 			Content content = new Content("text/html", email);
