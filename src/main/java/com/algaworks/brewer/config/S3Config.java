@@ -15,7 +15,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 
 @Configuration
-@PropertySource({ "classpath:env/brewer-s3.properties" }) // Do servidor de desenvolvimento ou de homolocação
+//@PropertySource({ "classpath:env/brewer-s3.properties" }) // Do servidor de desenvolvimento ou de homolocação
 @PropertySource(value = {"file://${HOME}/brewer-s3.properties"}, ignoreResourceNotFound = true)
 public class S3Config {
 	
