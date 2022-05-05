@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -21,68 +22,79 @@
 		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 
 		<!-- Spring MVC -->
-		<spring-framework.version>4.3.0.RELEASE</spring-framework.version>
+		<spring-framework.version>5.0.2.RELEASE</spring-framework.version>
 
 		<!-- Servlet API -->
 		<servlet.version>3.1.0</servlet.version>
-		
+
 		<!-- Thymeleaf -->
-		<thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
-		
+		<thymeleaf.version>3.0.1.RELEASE</thymeleaf.version>
+
 		<!-- Bean Validation / Hibernate Validator -->
 		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
-		
+
 		<!-- Thymeleaf - Layout Dialect -->
-		<thymeleaf-layout-dialect.version>2.0.0</thymeleaf-layout-dialect.version>
-		
+		<thymeleaf-layout-dialect.version>2.0.1</thymeleaf-layout-dialect.version>
+
 		<!-- Logging -->
-		<log4j.version>2.6</log4j.version>
+		<log4j.version>2.10.0</log4j.version>
 		<jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
-		
+
 		<!-- JPA / Hibernate -->
 		<hibernate.version>5.1.0.Final</hibernate.version>
-		
+
 		<!-- Spring Data JPA -->
 		<spring-data-jpa.version>1.10.2.RELEASE</spring-data-jpa.version>
-		
+
 		<!-- Jackson - JSON -->
-		<jackson-core.version>2.7.5</jackson-core.version>
-		
+		<jackson-core.version>2.10.0</jackson-core.version>
+
 		<!-- thumbnailator - Gerar Thumbnail -->
- 		<!-- https://github.com/coobird/thumbnailator -->
+		<!-- https://github.com/coobird/thumbnailator -->
 		<thumbnailator.version>0.4.8</thumbnailator.version>
-		
+
 		<!-- Thymeleaf extras data attribute -->
 		<thymeleaf-extras-data-attribute.version>2.0.1</thymeleaf-extras-data-attribute.version>
-		
-		<!-- Cache - Guava -->
-		<guava.version>19.0</guava.version>
-		
+
 		<!-- Apache Bean Utils -->
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
-		
+
 		<!-- Spring Security -->
 		<spring-security.version>4.1.1.RELEASE</spring-security.version>
-		
+
 		<!-- Thymeleaf - Extras Spring Security -->
 		<thymeleaf-extras-springsecurity.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity.version>
-		
+
 		<!-- JUnit -->
 		<junit.version>4.12</junit.version>
-		
+
 		<!-- Java Mail -->
 		<javax.mail.version>1.5.6</javax.mail.version>
-		
+
 		<sendgrid.version>4.6.0</sendgrid.version>
-		
+
+		<!-- AWS SDK - S3 -->
+		<aws-java-sdk-s3.version>1.12.209</aws-java-sdk-s3.version>
+
+		<!-- Apache Commons DBCP -->
+		<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+
 		<!-- JasperReports -->
-		<jasperreports.version>6.18.1</jasperreports.version>
-		
+		<jasperreports.version>6.3.0</jasperreports.version>
+
 		<!-- JasperReports Fonts -->
 		<jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
+
+		<!-- EhCache -->
+		<ehcache.version>3.4.0</ehcache.version>
+
+		<!-- JCache -->
+		<jcache.version>1.0.0</jcache.version>
 	</properties>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -92,7 +104,7 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
@@ -101,14 +113,50 @@
 					<driver>com.mysql.jdbc.Driver</driver>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.3.1</version>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.heroku</groupId>
+									<artifactId>webapp-runner</artifactId>
+									<version>9.0.52.1</version>
+									<destFileName>webapp-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+		</profile>
+
+		<profile>
+			<id>prod</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
 
 	<dependencyManagement>
 		<dependencies>
@@ -135,7 +183,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- Servlet API -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -158,22 +206,22 @@
 			<version>${thymeleaf.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Bean Validation / Hibernate Validator -->
-  		<dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        
-        <!-- Thymeleaf - Layout Dialect -->
 		<dependency>
-    		<groupId>nz.net.ultraq.thymeleaf</groupId>
-    		<artifactId>thymeleaf-layout-dialect</artifactId>
-    		<version>${thymeleaf-layout-dialect.version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
+		<!-- Thymeleaf - Layout Dialect -->
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+			<version>${thymeleaf-layout-dialect.version}</version>
+		</dependency>
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -195,7 +243,7 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${jcl-over-slf4j.version}</version>
 		</dependency>
-		
+
 		<!-- JPA / Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -205,13 +253,13 @@
 		</dependency>
 
 		<!-- Hibernate - Java 8 support -->
-        <dependency>
-    		<groupId>org.hibernate</groupId>
-    		<artifactId>hibernate-java8</artifactId>
-    		<version>${hibernate.version}</version>
-    		<scope>compile</scope>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>${hibernate.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- MySQL Driver -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -219,41 +267,41 @@
 			<version>${mysql-connector-java.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
 		<dependency>
-		    <groupId>com.mchange</groupId>
-		    <artifactId>c3p0</artifactId>
-		    <version>0.9.5.5</version>
-		    <scope>compile</scope>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.5</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/com.mchange/mchange-commons-java -->
 		<dependency>
-		    <groupId>com.mchange</groupId>
-		    <artifactId>mchange-commons-java</artifactId>
-		    <version>0.2.20</version>
-		    <scope>compile</scope>
+			<groupId>com.mchange</groupId>
+			<artifactId>mchange-commons-java</artifactId>
+			<version>0.2.20</version>
+			<scope>compile</scope>
 		</dependency>
-		
-		
-		
+
+
+
 		<!-- Spring Data JPA -->
 		<dependency>
-		    <groupId>org.springframework.data</groupId>
-		    <artifactId>spring-data-jpa</artifactId>
-		    <version>${spring-data-jpa.version}</version>
-		    <scope>compile</scope>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Jackson - JSON -->
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>${jackson-core.version}</version>
-		    <scope>compile</scope>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-core.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- thumbnailator - Gerar Thumbnail -->
 		<dependency>
 			<groupId>net.coobird</groupId>
@@ -261,38 +309,30 @@
 			<version>${thumbnailator.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Thymeleaf extras data attribute -->
 		<dependency>
-    		<groupId>com.github.mxab.thymeleaf.extras</groupId>
-    		<artifactId>thymeleaf-extras-data-attribute</artifactId>
-    		<version>${thymeleaf-extras-data-attribute.version}</version>
-    		<scope>compile</scope>
-		</dependency>
-		
-		<!-- Cache - Guava -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
+			<groupId>com.github.mxab.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-data-attribute</artifactId>
+			<version>${thymeleaf-extras-data-attribute.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Spring Context Support -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Apache Bean Utils -->
 		<dependency>
-    		<groupId>commons-beanutils</groupId>
-    		<artifactId>commons-beanutils</artifactId>
-    		<version>${commons-beanutils.version}</version>
-    		<scope>compile</scope>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Spring Security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -306,15 +346,15 @@
 			<version>${spring-security.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Thymeleaf - Extras Spring Security -->
 		<dependency>
-		    <groupId>org.thymeleaf.extras</groupId>
-		    <artifactId>thymeleaf-extras-springsecurity4</artifactId>
-		    <version>${thymeleaf-extras-springsecurity.version}</version>
-		    <scope>compile</scope>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+			<version>${thymeleaf-extras-springsecurity.version}</version>
+			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -322,23 +362,38 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Java Mail -->
 		<dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>${javax.mail.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>${javax.mail.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- SendGrid -->
-        <dependency>
+		<dependency>
 			<groupId>com.sendgrid</groupId>
 			<artifactId>sendgrid-java</artifactId>
 			<version>${sendgrid.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
+		<!-- AWS SDK - S3 -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk-s3.version}</version>
+		</dependency>
+
+		<!-- Apache Commons DBCP -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>${commons-dbcp2.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- JasperReports -->
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
@@ -346,12 +401,39 @@
 			<version>${jasperreports.version}</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- JasperReports Fonts -->
 		<dependency>
-		    <groupId>net.sf.jasperreports</groupId>
-		    <artifactId>jasperreports-fonts</artifactId>
-		    <version>${jasperreports-fonts.version}</version>
-		    <scope>compile</scope>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-fonts</artifactId>
+			<version>${jasperreports-fonts.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- EhCache -->
+		<dependency>
+			<groupId>org.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>${ehcache.version}</version>
+		</dependency>
+
+		<!-- JCache -->
+		<dependency>
+			<groupId>javax.cache</groupId>
+			<artifactId>cache-api</artifactId>
+			<version>${jcache.version}</version>
 		</dependency>
 	</dependencies>
-	
+
+	<repositories>
+		<repository>
+			<id>jasperreports</id>
+			<url>http://jasperreports.sourceforge.net/maven2</url>
+		</repository>
+		<repository>
+			<id>jaspersoft-third-party</id>
+			<url>https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
+		</repository>
+	</repositories>
+
 </project>

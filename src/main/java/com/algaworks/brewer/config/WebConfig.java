@@ -2,12 +2,13 @@ package com.algaworks.brewer.config;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.TimeUnit;
+
+import javax.cache.Caching;
 
 import org.springframework.beans.BeansException;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.guava.GuavaCacheManager;
+import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
@@ -26,7 +27,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -43,7 +44,6 @@ import com.algaworks.brewer.controller.converter.GrupoConverter;
 import com.algaworks.brewer.session.TabelasItensSession;
 import com.algaworks.brewer.thymeleaf.BrewerDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
-import com.google.common.cache.CacheBuilder;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
@@ -53,7 +53,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @EnableSpringDataWebSupport
 @EnableCaching
 @EnableAsync
-public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+public class WebConfig implements ApplicationContextAware, WebMvcConfigurer {
 
 	private ApplicationContext applicationContext;
 
@@ -121,14 +121,10 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	}
 	
 	@Bean
-	public CacheManager cacheManager() {
-		CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder()
-				.maximumSize(3)
-				.expireAfterAccess(20, TimeUnit.SECONDS);
-		
-		GuavaCacheManager cacheManager = new GuavaCacheManager();
-		cacheManager.setCacheBuilder(cacheBuilder);
-		return cacheManager;
+	public CacheManager cacheManager() throws Exception {
+		return new JCacheCacheManager(Caching.getCachingProvider().getCacheManager(
+				getClass().getResource("/cache/ehcache.xml").toURI(),
+				getClass().getClassLoader()));
 	}
 	
 	@Bean

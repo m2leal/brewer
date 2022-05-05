@@ -1,3 +1,14 @@
 /target/
 mail-homolog.properties
 mail-local.properties
+*.properties
+
+Servers/*
+.metadata
+.settings
+.classpath
+.project
+target/
+bin/
+.mvn*
+mvnw*

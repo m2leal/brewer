@@ -21,9 +21,10 @@
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas/nova.+}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas.+}">
 			            	<a th:href="@{/vendas/nova}">Cadastro de venda</a>
 			            </li>
+			            
 			            
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/vendas}">
 			            	<a th:href="@{/vendas}">Pesquisa de vendas</a>
@@ -62,6 +63,19 @@
 			            </li>
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/usuarios.*}">
 			            	<a th:href="@{/usuarios}">Usuários</a>
+			            </li>
+          			</ul>
+        		</li>
+        		
+        		<li class="aw-menu__item">
+          			<a href="#">
+            			<i class="fa  fa-fw  fa-file-pdf-o"></i><span>Relatórios</span>
+            			<i class="aw-menu__navigation-icon  fa"></i>
+          			</a>
+
+          			<ul class="aw-menu__list  aw-menu__list--sublist">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/relatorios.*}">
+			            	<a th:href="@{/relatorios/vendasEmitidas}">Vendas Emitidas</a>
 			            </li>
           			</ul>
         		</li>
