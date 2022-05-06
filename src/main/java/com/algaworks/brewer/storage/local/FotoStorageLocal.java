@@ -18,7 +18,7 @@ import com.algaworks.brewer.storage.FotoStorage;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 
-@Profile("local")
+@Profile("!prod")
 @Component
 public class FotoStorageLocal implements FotoStorage {
 

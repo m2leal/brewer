@@ -32,7 +32,7 @@ public class CadastroEstiloService {
 	@Transactional
 	public void excluir(Long codigo) {
 		try {
-			estilos.delete(codigo);
+			estilos.deleteById(codigo);
 			estilos.flush();
 		} catch (PersistenceException e) {
 			throw new ImpossivelExcluirEntidadeException("Impossível apagar estilo. Já foi usado em alguma cerveja.");
@@ -41,7 +41,7 @@ public class CadastroEstiloService {
 	
 	@Transactional
 	public Estilo pesquisar(Long codigo) {
-		return estilos.findOne(codigo);
+		return estilos.getOne(codigo);
 	}
 	
 }

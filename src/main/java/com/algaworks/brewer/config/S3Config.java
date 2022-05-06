@@ -15,8 +15,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 
 @Configuration
-//@PropertySource({ "classpath:env/brewer-s3.properties" }, ignoreResourceNotFound = true) // Do servidor de desenvolvimento ou de homolocação
-//@PropertySource(value = {"file://${HOME}/brewer-s3.properties"}, ignoreResourceNotFound = true)
+@PropertySource({ "classpath:env/brewer-s3.properties" }) // Do servidor de desenvolvimento ou de homolocação
+@PropertySource(value = {"file://${HOME}/brewer-s3.properties"}, ignoreResourceNotFound = true)
 public class S3Config {
 	
 	@Autowired
@@ -24,8 +24,7 @@ public class S3Config {
 	 
 	@Bean
 	public AmazonS3 amazonS3() {
-		//AWSCredentials credenciais = new BasicAWSCredentials(env.getProperty("AWS_ACCESS_KEY_ID"), env.getProperty("AWS_SECRET_ACCESS_KEY"));
-		AWSCredentials credenciais = new BasicAWSCredentials(env.getProperty("AKIARKYGOF6ZAJE3FCXO"), env.getProperty("WlzfxIS4d3IxawM8RKqGSH2yrikSQLWFkmRooolZ"));
+		AWSCredentials credenciais = new BasicAWSCredentials(env.getProperty("AWS_ACCESS_KEY_ID"), env.getProperty("AWS_SECRET_ACCESS_KEY"));
 		AmazonS3 amazonS3 = new AmazonS3Client(credenciais, new ClientConfiguration());
 		Region regiao = Region.getRegion(Regions.SA_EAST_1);
 		amazonS3.setRegion(regiao);

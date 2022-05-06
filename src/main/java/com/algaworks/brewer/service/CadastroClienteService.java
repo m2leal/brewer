@@ -51,7 +51,7 @@ public class CadastroClienteService {
 	@Transactional
 	public void excluir(Long codigo) {
 		try {
-			clientes.delete(codigo);
+			clientes.deleteById(codigo);
 			clientes.flush();
 		} catch (PersistenceException e) {
 			throw new ImpossivelExcluirEntidadeException("Impossível apagar cliente. Já foi usado em alguma venda.");
@@ -60,6 +60,6 @@ public class CadastroClienteService {
 	
 	@Transactional
 	public Cliente pesquisar(Long codigo) {
-		return clientes.findOne(codigo);
+		return clientes.getOne(codigo);
 	}
 }

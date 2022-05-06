@@ -32,7 +32,7 @@ public class CadastroCidadeService {
 	@Transactional
 	public void excluir(Long codigo) {
 		try {
-			cidades.delete(codigo);
+			cidades.deleteById(codigo);
 			cidades.flush();
 		} catch (PersistenceException e) {
 			throw new ImpossivelExcluirEntidadeException("Impossível apagar cidade. Já foi usado em algum cliente.");
@@ -41,6 +41,6 @@ public class CadastroCidadeService {
 	
 	@Transactional
 	public Cidade pesquisar(Long codigo) {
-		return cidades.findOne(codigo);
+		return cidades.getOne(codigo);
 	}
 }

@@ -58,7 +58,7 @@ public class CadastroUsuarioService {
 	@Transactional
 	public void excluir(Long codigo) {
 		try {
-			usuarios.delete(codigo);
+			usuarios.deleteById(codigo);
 			usuarios.flush();
 		} catch (PersistenceException e) {
 			throw new ImpossivelExcluirEntidadeException("Impossível apagar usuario.");

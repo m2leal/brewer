@@ -38,7 +38,7 @@ import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 
 @Component
-@PropertySource({ "classpath:env/mail-${ambiente:local}.properties" }) // Do servidor de desenvolvimento ou de homolocação
+//@PropertySource({ "classpath:env/mail-${ambiente:local}.properties" }) // Do servidor de desenvolvimento ou de homolocação
 @PropertySource(value = { "file://${HOME}/.brewer-mail.properties" }, ignoreResourceNotFound = true) // Do servidor de produção
 public class Mailer {
 	
@@ -81,7 +81,7 @@ public class Mailer {
 		try {
 			String email = thymeleaf.process("mail/ResumoVenda", context);
 			
-			Email from = new Email(env.getProperty("MAIL_FROM")); //email cadastrado no sendgrid
+			Email from = new Email(env.getProperty("brewer.mail.mail_from")); //email cadastrado no sendgrid
 			Email to = new Email(venda.getCliente().getEmail());
 			String subject = String.format("Brewer - Venda nº %d", venda.getCodigo());
 			Content content = new Content("text/html", email);
@@ -132,7 +132,7 @@ public class Mailer {
 				mail.addAttachments(imagem);
 			}
 		
-			SendGrid sg = new SendGrid(env.getProperty("SENDGRID_API_KEY"));
+			SendGrid sg = new SendGrid(env.getProperty("brewer.mail.sendgrid_api_key_local"));
 			
 			Request request = new Request();
 			request.setMethod(Method.POST);
