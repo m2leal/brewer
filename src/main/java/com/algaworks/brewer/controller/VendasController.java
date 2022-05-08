@@ -13,10 +13,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -63,11 +61,6 @@ public class VendasController {
 	
 	@Autowired
 	private Mailer mailer;
-	
-	@InitBinder("venda")
-	public void inicializarValidador(WebDataBinder binder) {
-		binder.setValidator(vendaValidator);
-	}
 	
 	@GetMapping("/nova")
 	public ModelAndView nova(Venda venda) {
@@ -181,7 +174,8 @@ public class VendasController {
 		try {
 			cadastroVendaService.cancelar(venda);
 		} catch (AccessDeniedException e) {
-			return new ModelAndView("/403");
+			ModelAndView mv = new ModelAndView("error");
+			mv.addObject("status", 403);
 		}
 		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso!");
 		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
