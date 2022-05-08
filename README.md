@@ -1,0 +1,1 @@
+Projeto de cervejaria com controle de estoque, de usuários, clientes e vendas.
